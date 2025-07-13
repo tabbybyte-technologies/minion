@@ -1,6 +1,6 @@
 {
   "name": "@tabbybyte/minion",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Bun-based Node.js CLI tool for AI-powered command execution in your terminal",
   "type": "module",
   "bin": {

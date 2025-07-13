@@ -28,10 +28,14 @@ Examples:
   # minion --dry-run < task.txt (feature disabled)
 
 Environment Variables:
-  PROVIDER            AI provider (openai, anthropic, local)
-  OPENAI_API_KEY      OpenAI API key
-  ANTHROPIC_API_KEY   Anthropic API key
-  LOCAL_API_URL       Local LLM API URL
+  MINION_PROVIDER         AI provider (openai, anthropic, google, local)
+  OPENAI_API_KEY          OpenAI API key (required for OpenAI)
+  ANTHROPIC_API_KEY       Anthropic API key (required for Anthropic)
+  MINION_GOOGLE_API_KEY   Google API key (required for Google)
+  MINION_LOCAL_API_URL    Local LLM API URL (required for local)
+  MINION_DEBUG            Set to 1 to enable debug output
+  MINION_TEMPERATURE      Set temperature for LLM (default: 0.7)
+  MINION_MAX_STEPS        Max tool steps (default: 5)
 `;
 
 async function main() {

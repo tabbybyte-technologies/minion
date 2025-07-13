@@ -19,13 +19,13 @@ Options:
   -f, --file <path>    Read prompt from file instead of stdin
   -p, --prompt <text>  Provide prompt directly
   -h, --help           Show this help message
-  --dry-run            Show commands without executing them
+  --dry-run            (Temporarily disabled)
   -v, --version        Show version information
 
 Examples:
   echo "List all files in current directory" | minion
   minion -f prompt.txt
-  minion --dry-run < task.txt
+  # minion --dry-run < task.txt (feature disabled)
 
 Environment Variables:
   PROVIDER            AI provider (openai, anthropic, local)
@@ -42,7 +42,7 @@ async function main() {
         file: { type: 'string', short: 'f' },
         prompt: { type: 'string', short: 'p' },
         help: { type: 'boolean', short: 'h' },
-        'dry-run': { type: 'boolean' },
+        'dry-run': { type: 'boolean' }, // (Temporarily disabled)
         version: { type: 'boolean', short: 'v' }
       },
       allowPositionals: false
@@ -61,8 +61,11 @@ async function main() {
     // Load configuration
     const config = await loadConfig();
     
-    // Set dry-run mode
-    config.dryRun = args['dry-run'] || false;
+    // Set dry-run mode (disabled)
+    if (args['dry-run']) {
+      console.error('The --dry-run feature is temporarily disabled and will not have any effect.');
+    }
+    config.dryRun = false;
 
     // Get user input: --prompt, --file, or stdin
     let userPrompt = '';

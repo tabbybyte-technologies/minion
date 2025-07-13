@@ -13,7 +13,7 @@ A Bun-based Node.js CLI tool for AI-powered command execution with built-in safe
 
 - 🔒 **Safe Command Execution**: Built-in allowlist and dangerous command detection
 - 🤖 **Multiple AI Providers**: Support for OpenAI, Anthropic, Google Generative AI, and local LLM endpoints
-- 🛡️ **Safety First**: Dry-run mode and comprehensive safety guardrails
+- 🛡️ **Safety First**: Comprehensive safety guardrails
 - 🚀 **Cross-Platform**: Works on macOS, Linux, and Windows
 - ⚡ **Fast**: Built with Bun for optimal performance
 - 📦 **Modular**: Clean, composable architecture
@@ -86,9 +86,7 @@ minion -f task.txt
 # Directly from command line
 minion -p "List all files in the current directory"
 
-# Dry run mode (shows commands without executing)
-minion --dry-run -p "List all files in the current directory"
-minion --dry-run -f task.txt
+<!-- Dry run mode is temporarily disabled -->
 ```
 
 ### Examples
@@ -122,7 +120,7 @@ Options:
   -p, --prompt <prompt> Specify the prompt directly on the command line
   -f, --file <path>    Read prompt from file instead of stdin
   -h, --help          Show this help message
-  --dry-run           Show commands without executing them
+  --dry-run           (Temporarily disabled)
   --version, -v       Show version information
 ```
 
@@ -143,7 +141,8 @@ Blocks potentially harmful commands:
 - And more...
 
 ### Dry Run Mode
-Use `--dry-run` to see what commands would be executed without actually running them.
+**Temporarily Disabled**
+The `--dry-run` feature is currently disabled and will not have any effect. It will be re-enabled in a future release.
 
 ## Architecture
 
@@ -190,7 +189,7 @@ MIT License - see LICENSE file for details.
 
 This tool is designed with safety as a primary concern, but users should:
 - Review commands before execution in production environments
-- Use dry-run mode when testing new prompts
+<!-- Dry-run mode is temporarily disabled -->
 - Keep API keys secure and never commit them to version control
 - Regularly update the tool to get the latest safety improvements
 

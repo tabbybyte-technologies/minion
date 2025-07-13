@@ -1,7 +1,7 @@
 {
-  "name": "minion",
-  "version": "1.0.0",
-  "description": "A Bun-based Node.js CLI tool for AI-powered command execution",
+  "name": "@tabbybyte/minion",
+  "version": "1.0.1",
+  "description": "A Bun-based Node.js CLI tool for AI-powered command execution in your terminal",
   "type": "module",
   "bin": {
     "minion": "./bin/minion.js"
@@ -11,7 +11,7 @@
     "dev": "bun run ./bin/minion.js",
     "test": "bun test"
   },
-  "keywords": ["cli", "ai", "automation", "bun"],
+  "keywords": ["cli", "ai", "automation", "bun", "shell", "command-line", "tool"],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -24,11 +24,19 @@
     "zod": "^3.22.0"
   },
   "engines": {
-    "bun": ">=1.0.0"
+    "bun": ">=1.2.18"
   },
   "files": [
     "bin/",
     "lib/",
     "README.md"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tabbybyte-technologies/minion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tabbybyte-technologies/minion/issues"
+  },
+  "homepage": "https://github.com/tabbybyte-technologies/minion#readme"
 }

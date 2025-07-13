@@ -2,15 +2,17 @@
 
 A Bun-based Node.js CLI tool for AI-powered command execution with built-in safety features.
 
+> **Note:** Minion is intended for quick execution of small to medium _ad hoc_ tasks on the command line, not for large or complex projects.
+
 ## Prerequisites
 
 - [Bun](https://bun.sh) runtime (install with: `curl -fsSL https://bun.sh/install | bash`)
-- An API key for your chosen AI provider (OpenAI, Anthropic, or local LLM)
+- An API key for your chosen AI provider (OpenAI, Anthropic, Google Generative AI, or local LLM)
 
 ## Features
 
 - 🔒 **Safe Command Execution**: Built-in allowlist and dangerous command detection
-- 🤖 **Multiple AI Providers**: Support for OpenAI, Anthropic, and local LLM endpoints
+- 🤖 **Multiple AI Providers**: Support for OpenAI, Anthropic, Google Generative AI, and local LLM endpoints
 - 🛡️ **Safety First**: Dry-run mode and comprehensive safety guardrails
 - 🚀 **Cross-Platform**: Works on macOS, Linux, and Windows
 - ⚡ **Fast**: Built with Bun for optimal performance
@@ -21,41 +23,55 @@ A Bun-based Node.js CLI tool for AI-powered command execution with built-in safe
 ### Global Installation
 ```bash
 # Using npm
-npm install -g minion
+npm install -g @tabbybyte/minion
 
 # Using bun
-bun install -g minion
+bun install -g @tabbybyte/minion
 ```
 
 ### From Source
 ```bash
-git clone <repository>
-cd minion-tool
+# Clone the repository
+git clone https://github.com/tabbybyte-technologies/minion
+cd minion
+
+# Install dependencies
 bun install
-bun run build  # Creates a single executable binary
+
+# Run the tool directly (requires flags or input)
+bun run dev -p "List all files in the current directory"
+
+# Optional: Build a single executable binary
+bun run build
 ```
 
 ## Configuration
 
-Create a `.env` file in your project directory or set environment variables:
+Minion uses environment variables for configuration, which can be set at runtime by placing a `.env` file in the current directory. The required and optional environment variable names are detailed in the `env.SAMPLE` file included in the repository.
 
 ```bash
 # Required: Choose your AI provider
-MINION_PROVIDER=openai  # or anthropic, local
+MINION_PROVIDER=openai  # or anthropic, google, local
 
 # For OpenAI
 MINION_OPENAI_API_KEY=your_api_key_here
-MINION_OPENAI_MODEL=gpt-4  # optional, defaults to gpt-4
+MINION_OPENAI_MODEL=gpt-4-turbo-preview
 
 # For Anthropic
 MINION_ANTHROPIC_API_KEY=your_api_key_here
-MINION_ANTHROPIC_MODEL=claude-3-sonnet-20240229  # optional
+MINION_ANTHROPIC_MODEL=claude-3-opus-20240229
+
+# For Google Generative AI
+MINION_GOOGLE_API_KEY=your_api_key_here
+MINION_GOOGLE_MODEL=gemini-1.5-pro-latest
 
 # For Local LLM (OpenAI-compatible API)
 MINION_LOCAL_API_URL=http://localhost:1234/v1
-MINION_LOCAL_API_KEY=local  # optional
-MINION_LOCAL_MODEL=llama2  # optional
+MINION_LOCAL_API_KEY=local
+MINION_LOCAL_MODEL=mistral-medium
 ```
+
+Refer to `env.SAMPLE` for a complete list of supported environment variables.
 
 ## Usage
 
@@ -149,12 +165,12 @@ minion/
 bun install
 
 # Run in development mode
-bun run dev
+bun run dev -p "What is the date today?"
 
 # Build executable binary
 bun run build
 
-# Run tests
+# Run tests (Coming Soon...)
 bun test
 ```
 

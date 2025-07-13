@@ -107,7 +107,7 @@ Options:
   -f, --file <path>    Read prompt from file instead of stdin
   -h, --help          Show this help message
   --dry-run           Show commands without executing them
-  --version           Show version information
+  --version, -v       Show version information
 ```
 
 ## Safety Features

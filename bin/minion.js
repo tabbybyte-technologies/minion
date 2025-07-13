@@ -8,6 +8,7 @@ import { loadConfig } from '../lib/config.js';
 import { createLLMClient } from '../lib/llm.js';
 import { handleInput } from '../lib/input.js';
 import { setupTools } from '../lib/tools.js';
+import { version } from '../package.json';
 
 const USAGE = `
 Usage: minion [OPTIONS]
@@ -16,9 +17,10 @@ A Bun-based CLI tool for AI-powered command execution.
 
 Options:
   -f, --file <path>    Read prompt from file instead of stdin
-  -h, --help          Show this help message
-  --dry-run           Show commands without executing them
-  --version           Show version information
+  -p, --prompt <text>  Provide prompt directly
+  -h, --help           Show this help message
+  --dry-run            Show commands without executing them
+  -v, --version        Show version information
 
 Examples:
   echo "List all files in current directory" | minion
@@ -41,7 +43,7 @@ async function main() {
         prompt: { type: 'string', short: 'p' },
         help: { type: 'boolean', short: 'h' },
         'dry-run': { type: 'boolean' },
-        version: { type: 'boolean' }
+        version: { type: 'boolean', short: 'v' }
       },
       allowPositionals: false
     });
@@ -52,9 +54,7 @@ async function main() {
     }
 
     if (args.version) {
-      const pkgPath = new URL('../package.json', import.meta.url);
-      const pkg = JSON.parse(await readFile(pkgPath, 'utf-8'));
-      console.log(`minion v${pkg.version}`);
+      console.log(`Minion version: ${version}`);
       process.exit(0);
     }
 
@@ -121,4 +121,5 @@ async function main() {
   }
 }
 
+main();
 main();

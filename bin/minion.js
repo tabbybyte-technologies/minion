@@ -38,6 +38,7 @@ async function main() {
       args: process.argv.slice(2),
       options: {
         file: { type: 'string', short: 'f' },
+        prompt: { type: 'string', short: 'p' },
         help: { type: 'boolean', short: 'h' },
         'dry-run': { type: 'boolean' },
         version: { type: 'boolean' }
@@ -63,11 +64,15 @@ async function main() {
     // Set dry-run mode
     config.dryRun = args['dry-run'] || false;
 
-    // Get user input
-    const userPrompt = await handleInput(args.file);
-    
+    // Get user input: --prompt, --file, or stdin
+    let userPrompt = '';
+    if (args.prompt) {
+      userPrompt = args.prompt;
+    } else {
+      userPrompt = await handleInput(args.file);
+    }
     if (!userPrompt.trim()) {
-      console.error('Error: No prompt provided');
+      console.error('Error: No prompt provided. Use -p/--prompt, -f/--file, or pipe input.');
       process.exit(1);
     }
 

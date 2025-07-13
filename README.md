@@ -67,7 +67,11 @@ echo "List all files in the current directory" | minion
 # From file
 minion -f task.txt
 
+# Directly from command line
+minion -p "List all files in the current directory"
+
 # Dry run mode (shows commands without executing)
+minion --dry-run -p "List all files in the current directory"
 minion --dry-run -f task.txt
 ```
 
@@ -99,6 +103,7 @@ echo "Check git status and show the last 3 commits" | minion
 Usage: minion [OPTIONS]
 
 Options:
+  -p, --prompt <prompt> Specify the prompt directly on the command line
   -f, --file <path>    Read prompt from file instead of stdin
   -h, --help          Show this help message
   --dry-run           Show commands without executing them

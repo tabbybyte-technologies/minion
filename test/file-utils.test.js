@@ -9,7 +9,7 @@ import {
   getFileExtension,
   getFileNameWithoutExtension
 } from '../lib/file-utils.js';
-import { unlink, rmdir } from 'fs/promises';
+import { rmdir } from 'fs/promises';
 import { join } from 'path';
 
 const TEST_DIR = '/tmp/minion-test';
@@ -29,7 +29,7 @@ test('file utilities - write and read', async () => {
   expect(readContent).toBe(content);
   
   // Cleanup
-  await unlink(TEST_FILE);
+  await Bun.file(TEST_FILE).delete();
   await rmdir(TEST_DIR);
 });
 
@@ -48,7 +48,7 @@ test('file utilities - append content', async () => {
   expect(readContent).toBe(content1 + content2);
   
   // Cleanup
-  await unlink(TEST_FILE);
+  await Bun.file(TEST_FILE).delete();
   await rmdir(TEST_DIR);
 });
 

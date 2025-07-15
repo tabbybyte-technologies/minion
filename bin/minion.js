@@ -2,7 +2,6 @@
 
 import { parseArgs } from 'util';
 import ora from 'ora';
-import { readFile } from 'fs/promises';
 import { stdin } from 'process';
 import { loadConfig } from '../lib/config.js';
 import { createLLMClient } from '../lib/llm.js';

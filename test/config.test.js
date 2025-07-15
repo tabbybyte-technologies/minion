@@ -1,7 +1,5 @@
 import { test, expect } from 'bun:test';
 import { loadConfig } from '../lib/config.js';
-import { rename, access } from 'fs/promises';
-import { constants } from 'fs';
 
 test('config loads with default values', async () => {
   // Save original environment
@@ -32,9 +30,11 @@ test('config throws error when required API key is missing', async () => {
   // Temporarily move .env file if it exists
   let envMoved = false;
   try {
-    await access('.env', constants.F_OK);
-    await rename('.env', '.env.test-backup');
-    envMoved = true;
+    if (await Bun.file('.env').exists()) {
+      await Bun.write('.env.test-backup', await Bun.file('.env').text());
+      await Bun.write('.env', '');
+      envMoved = true;
+    }
   } catch {
     // .env doesn't exist, which is fine for this test
   }
@@ -59,7 +59,7 @@ test('config throws error when required API key is missing', async () => {
     // Restore .env file if we moved it
     if (envMoved) {
       try {
-        await rename('.env.test-backup', '.env');
+        await Bun.write('.env', await Bun.file('.env.test-backup').text());
       } catch {
         // Ignore errors restoring
       }

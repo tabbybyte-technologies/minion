@@ -47,7 +47,12 @@ bun run build
 
 ## Configuration
 
-Minion uses environment variables for configuration, which can be set at runtime by placing a `.env` file in the current directory. The required and optional environment variable names are detailed in the `env.SAMPLE` file included in the repository.
+Minion uses environment variables for configuration, which can be set at runtime by placing a `.env` file in the current directory or specifying a custom configuration file using the `--config` flag (or its shortcut `-c`). The required and optional environment variable names are detailed in the `env.SAMPLE` file included in the repository. These names can also be seen in the `--help` output of the CLI.
+
+### Setting Configuration
+
+#### Using `.env` File
+Place a `.env` file in the current directory with the following variables:
 
 ```bash
 # Required: Choose your AI provider
@@ -55,20 +60,34 @@ MINION_PROVIDER=openai  # or anthropic, google, local
 
 # For OpenAI
 MINION_OPENAI_API_KEY=your_api_key_here
-MINION_OPENAI_MODEL=gpt-4-turbo-preview
+MINION_OPENAI_MODEL=gpt-4  # Default: gpt-4
 
 # For Anthropic
 MINION_ANTHROPIC_API_KEY=your_api_key_here
-MINION_ANTHROPIC_MODEL=claude-3-opus-20240229
+MINION_ANTHROPIC_MODEL=claude-3-sonnet-20240229  # Default: claude-3-sonnet-20240229
 
 # For Google Generative AI
 MINION_GOOGLE_API_KEY=your_api_key_here
-MINION_GOOGLE_MODEL=gemini-1.5-pro-latest
+MINION_GOOGLE_MODEL=gemini-2.0-flash-lite  # Default: gemini-2.0-flash-lite
 
 # For Local LLM (OpenAI-compatible API)
 MINION_LOCAL_API_URL=http://localhost:1234/v1
-MINION_LOCAL_API_KEY=local
-MINION_LOCAL_MODEL=mistral-medium
+MINION_LOCAL_API_KEY=local  # Optional, default: 'local'
+MINION_LOCAL_MODEL=llama2  # Default: llama2
+
+# Optional: Debugging
+MINION_DEBUG=1  # Set to 1 to enable debug output
+
+# Optional: LLM Configuration
+MINION_TEMPERATURE=0.7  # Set temperature for LLM (default: 0.7)
+MINION_MAX_STEPS=5  # Max tool steps (default: 5)
+```
+
+#### Using `--config` Flag
+You can specify a custom configuration file using the `--config` flag or its shortcut `-c`. This overrides the `.env` file in the current directory.
+
+```bash
+minion -c /path/to/custom-config.env
 ```
 
 Refer to `env.SAMPLE` for a complete list of supported environment variables.
@@ -118,10 +137,12 @@ Usage: minion [OPTIONS]
 
 Options:
   -p, --prompt <prompt> Specify the prompt directly on the command line
-  -f, --file <path>    Read prompt from file instead of stdin
-  -h, --help          Show this help message
-  --dry-run           (Temporarily disabled)
-  --version, -v       Show version information
+  -f, --file <path>      Read prompt from file instead of stdin
+  -c, --config <path>    Specify a config env file to load (overrides .env in current dir)
+  --print-config         Print loaded config and exit
+  -h, --help             Show this help message
+  --dry-run              (Temporarily disabled)
+  --version, -v          Show version information
 ```
 
 ## Safety Features
@@ -195,7 +216,20 @@ This tool is designed with safety as a primary concern, but users should:
 
 ## Support
 
-- 📖 [Documentation](README.md)
-- 🐛 [Bug Reports](issues)
-- 💡 [Feature Requests](issues)
-- 💬 [Discussions](discussions)
+For help, feedback, or to report issues, please use the following resources:
+
+- 📖 [Documentation](https://github.com/tabbybyte-technologies/minion#readme)
+- 🐛 [Bug Reports](https://github.com/tabbybyte-technologies/minion/issues)
+- 💡 [Feature Requests](https://github.com/tabbybyte-technologies/minion/issues)
+- ✉️ [Email: hello.tabbybytes@gmail.com](mailto:hello.tabbybytes@gmail.com)
+
+## Changelog
+
+### v1.1.0
+
+- refactor: use Bun specific api-s wherever possible for perf ([5b4b7d7], Sayan Riju Chakrabarti, 2025-07-15)
+- feat: implement safe file tools for use by LLM ([5f6d75b], Sayan Riju Chakrabarti, 2025-07-15)
+- feat: add support for custom configuration files and printing config ([95b40ca], Sayan Riju Chakrabarti, 2025-07-15)
+
+---
+*Changelogs are updated for every major or minor release. Patch releases are not included.*

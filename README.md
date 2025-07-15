@@ -216,7 +216,20 @@ This tool is designed with safety as a primary concern, but users should:
 
 ## Support
 
-- 📖 [Documentation](README.md)
-- 🐛 [Bug Reports](issues)
-- 💡 [Feature Requests](issues)
-- 💬 [Discussions](discussions)
+For help, feedback, or to report issues, please use the following resources:
+
+- 📖 [Documentation](https://github.com/tabbybyte-technologies/minion#readme)
+- 🐛 [Bug Reports](https://github.com/tabbybyte-technologies/minion/issues)
+- 💡 [Feature Requests](https://github.com/tabbybyte-technologies/minion/issues)
+- ✉️ [Email: hello.tabbybytes@gmail.com](mailto:hello.tabbybytes@gmail.com)
+
+## Changelog
+
+### v1.1.0
+
+- refactor: use Bun specific api-s wherever possible for perf ([5b4b7d7], Sayan Riju Chakrabarti, 2025-07-15)
+- feat: implement safe file tools for use by LLM ([5f6d75b], Sayan Riju Chakrabarti, 2025-07-15)
+- feat: add support for custom configuration files and printing config ([95b40ca], Sayan Riju Chakrabarti, 2025-07-15)
+
+---
+*Changelogs are updated for every major or minor release. Patch releases are not included.*

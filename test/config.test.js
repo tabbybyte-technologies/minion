@@ -1,27 +1,71 @@
 import { test, expect } from 'bun:test';
 import { loadConfig } from '../lib/config.js';
+import { rename, access } from 'fs/promises';
+import { constants } from 'fs';
 
 test('config loads with default values', async () => {
+  // Save original environment
+  const originalEnv = { ...process.env };
+  
   // Set a minimal environment for testing
-  process.env.PROVIDER = 'openai';
-  process.env.OPENAI_API_KEY = 'test-key';
+  process.env.MINION_PROVIDER = 'openai';
+  process.env.MINION_OPENAI_API_KEY = 'test-key';
+  
+  // Clear any conflicting env vars
+  delete process.env.MINION_GOOGLE_API_KEY;
+  delete process.env.MINION_ANTHROPIC_API_KEY;
   
   const config = await loadConfig();
   
   expect(config.provider).toBe('openai');
   expect(config.apiKey).toBe('test-key');
   expect(config.model).toBe('gpt-4');
+  
+  // Restore original environment
+  process.env = originalEnv;
 });
 
 test('config throws error when required API key is missing', async () => {
-  // Clear environment variables
-  delete process.env.OPENAI_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
-  delete process.env.LOCAL_API_URL;
+  // Save original environment
+  const originalEnv = { ...process.env };
   
-  process.env.PROVIDER = 'openai';
+  // Temporarily move .env file if it exists
+  let envMoved = false;
+  try {
+    await access('.env', constants.F_OK);
+    await rename('.env', '.env.test-backup');
+    envMoved = true;
+  } catch {
+    // .env doesn't exist, which is fine for this test
+  }
   
-  expect(async () => {
-    await loadConfig();
-  }).toThrow('OPENAI_API_KEY environment variable is required');
+  try {
+    // Clear ALL relevant environment variables
+    Object.keys(process.env).forEach(key => {
+      if (key.startsWith('MINION_')) {
+        delete process.env[key];
+      }
+    });
+    
+    process.env.MINION_PROVIDER = 'openai';
+    
+    try {
+      await loadConfig();
+      expect.unreachable('Should have thrown an error');
+    } catch (error) {
+      expect(error.message).toContain('MINION_OPENAI_API_KEY environment variable is required');
+    }
+  } finally {
+    // Restore .env file if we moved it
+    if (envMoved) {
+      try {
+        await rename('.env.test-backup', '.env');
+      } catch {
+        // Ignore errors restoring
+      }
+    }
+    
+    // Restore original environment
+    process.env = originalEnv;
+  }
 });

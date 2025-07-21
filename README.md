@@ -286,6 +286,7 @@ For help, feedback, or to report issues, please use the following resources:
 - add runtime detection and smart build system
 - show runtime info in --print-config output regardless of debug mode
 - create cross-runtime compatibility layer for file operations and process spawning
+- improve base prompt for Minion agent: clearer tool usage, less restrictive file safety, and better output separation
 
 ### v1.1.0 (2025-07-15)
 - use Bun specific APIs wherever possible for performance

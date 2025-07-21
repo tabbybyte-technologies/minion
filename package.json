@@ -1,6 +1,6 @@
 {
   "name": "@tabbybyte/minion",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A cross-runtime CLI tool for AI-powered command execution. Auto-detects and uses Bun for performance when available, falls back to Node.js.",
   "type": "module",
   "bin": {

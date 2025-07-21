@@ -280,7 +280,7 @@ For help, feedback, or to report issues, please use the following resources:
 ## Changelog
 
 
-### v1.2.0 (2025-07-21)
+### v1.2.1 (2025-07-21)
 - add cross-runtime compatibility - auto-detects Bun for performance, falls back to Node.js
 - remove hard Bun dependency - tool now works on systems without Bun installed
 - add runtime detection and smart build system

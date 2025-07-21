@@ -1,1 +1,0 @@
-List all files in the current directory and show me the current date and time.

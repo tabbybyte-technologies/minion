@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { parseArgs } from 'util';
 import ora from 'ora';
@@ -7,12 +7,27 @@ import { loadConfig } from '../lib/config.js';
 import { createLLMClient } from '../lib/llm.js';
 import { handleInput } from '../lib/input.js';
 import { setupTools } from '../lib/tools.js';
-import { version } from '../package.json';
+import { getRuntimeInfo, logRuntimeInfo } from '../lib/runtime-compat.js';
+import { readFile } from 'fs/promises';
+
+// Load package.json for version info
+let version = '1.2.0'; // fallback version
+try {
+  const packageJson = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf-8'));
+  version = packageJson.version;
+} catch (error) {
+  // Fallback for compiled binaries where package.json might not be accessible
+  if (!error.message.includes('/$bunfs/package.json')) {
+    console.error('Warning: Could not read package.json:', error.message);
+  }
+}
 
 const USAGE = `
 Usage: minion [OPTIONS]
 
-A Bun-based CLI tool for AI-powered command execution.
+A cross-runtime CLI tool for AI-powered command execution. 
+Automatically detects and uses Bun for better performance when available, 
+falls back to Node.js when Bun is not installed.
 
 Options:
   -f, --file <path>    Read prompt from file instead of stdin
@@ -76,7 +91,12 @@ async function main() {
 
     // Load configuration
     const config = await loadConfig(args.config);
+    
     if (args['print-config']) {
+      // Always show runtime info for print-config command
+      const runtimeInfo = getRuntimeInfo();
+      console.log(`🚀 Runtime: ${runtimeInfo.runtime} ${runtimeInfo.version} (${runtimeInfo.platform}/${runtimeInfo.arch})`);
+      
       // Mask API keys for display
       const safeConfig = { ...config };
       if (safeConfig.apiKey) safeConfig.apiKey = '***';
@@ -84,6 +104,9 @@ async function main() {
       console.log('Loaded config:', JSON.stringify(safeConfig, null, 2));
       process.exit(0);
     }
+    
+    // Log runtime info if debug is enabled (only when not printing config)
+    logRuntimeInfo(config.debug);
 
     // Get user input: --prompt, --file, or stdin
     let userPrompt = '';

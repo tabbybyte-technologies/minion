@@ -1,17 +1,21 @@
 {
   "name": "@tabbybyte/minion",
-  "version": "1.1.0",
-  "description": "A Bun-based Node.js CLI tool for AI-powered command execution in your terminal",
+  "version": "1.2.0",
+  "description": "A cross-runtime CLI tool for AI-powered command execution. Auto-detects and uses Bun for performance when available, falls back to Node.js.",
   "type": "module",
   "bin": {
     "minion": "./bin/minion.js"
   },
   "scripts": {
-    "build": "bun build --compile --minify --sourcemap ./bin/minion.js --outfile minion",
-    "dev": "bun run ./bin/minion.js",
-    "test": "bun test"
+    "build": "node scripts/build.js",
+    "build:bun": "bun build --compile --minify --sourcemap ./bin/minion.js --outfile minion",
+    "dev": "node ./bin/minion.js",
+    "dev:bun": "bun run ./bin/minion.js",
+    "test": "node --test || bun test",
+    "test:node": "node --test",
+    "test:bun": "bun test"
   },
-  "keywords": ["cli", "ai", "automation", "bun", "shell", "command-line", "tool"],
+  "keywords": ["cli", "ai", "automation", "cross-runtime", "bun", "node", "shell", "command-line", "tool"],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -24,7 +28,17 @@
     "zod": "^3.22.0"
   },
   "engines": {
+    "node": ">=18.0.0"
+  },
+  "optionalDependencies": {
+  },
+  "peerDependencies": {
     "bun": ">=1.2.18"
+  },
+  "peerDependenciesMeta": {
+    "bun": {
+      "optional": true
+    }
   },
   "files": [
     "bin/",

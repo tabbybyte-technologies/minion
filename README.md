@@ -1,12 +1,15 @@
 # Minion 🤖
 
-A Bun-based Node.js CLI tool for AI-powered command execution with built-in safety features.
+A cross-runtime CLI tool for AI-powered command execution with built-in safety features.
+
+**🚀 Runtime Smart**: Automatically detects and uses Bun for optimal performance when available, gracefully falls back to Node.js when Bun isn't installed.
 
 > **Note:** Minion is intended for quick execution of small to medium _ad hoc_ tasks on the command line, not for large or complex projects.
 
 ## Prerequisites
 
-- [Bun](https://bun.sh) runtime (install with: `curl -fsSL https://bun.sh/install | bash`)
+- **Node.js 18+** (required - primary runtime)
+- **Bun** (optional - for enhanced performance): Install with `curl -fsSL https://bun.sh/install | bash`
 - An API key for your chosen AI provider (OpenAI, Anthropic, Google Generative AI, or local LLM)
 
 ## Features
@@ -15,17 +18,17 @@ A Bun-based Node.js CLI tool for AI-powered command execution with built-in safe
 - 🤖 **Multiple AI Providers**: Support for OpenAI, Anthropic, Google Generative AI, and local LLM endpoints
 - 🛡️ **Safety First**: Comprehensive safety guardrails
 - 🚀 **Cross-Platform**: Works on macOS, Linux, and Windows
-- ⚡ **Fast**: Built with Bun for optimal performance
+- ⚡ **Runtime Adaptive**: Auto-detects Bun for performance, works with Node.js everywhere
 - 📦 **Modular**: Clean, composable architecture
 
 ## Installation
 
-### Global Installation
+### Global Installation (Recommended)
 ```bash
-# Using npm
+# Using npm (works everywhere with Node.js)
 npm install -g @tabbybyte/minion
 
-# Using bun
+# Using bun (optimal performance when Bun is available)
 bun install -g @tabbybyte/minion
 ```
 
@@ -35,15 +38,27 @@ bun install -g @tabbybyte/minion
 git clone https://github.com/tabbybyte-technologies/minion
 cd minion
 
-# Install dependencies
+# Install dependencies (works with both npm and bun)
+npm install
+# OR
 bun install
 
 # Run the tool directly (requires flags or input)
+npm run dev -- -p "List all files in the current directory"
+# OR (if you have Bun)
 bun run dev -p "List all files in the current directory"
 
-# Optional: Build a single executable binary
-bun run build
+# Build optimized version
+npm run build  # Smart build: Uses Bun if available, validates with Node.js otherwise
 ```
+
+## Runtime Detection
+
+Minion automatically detects your runtime environment:
+
+- **With Bun installed**: Uses Bun APIs for enhanced performance (file operations, process spawning)
+- **Node.js only**: Uses standard Node.js APIs, full compatibility maintained
+- **Debug mode**: Enable `MINION_DEBUG=1` to see which runtime is being used
 
 ## Configuration
 
@@ -139,10 +154,10 @@ Options:
   -p, --prompt <prompt> Specify the prompt directly on the command line
   -f, --file <path>      Read prompt from file instead of stdin
   -c, --config <path>    Specify a config env file to load (overrides .env in current dir)
-  --print-config         Print loaded config and exit
-  -h, --help             Show this help message
+  --print-config         Print loaded config and detected runtime info, then exit
+  -h, --help             Show this help message, then exit
   --dry-run              (Temporarily disabled)
-  --version, -v          Show version information
+  --version, -v          Show version information, then exit
 ```
 
 ## Safety Features
@@ -165,17 +180,56 @@ Blocks potentially harmful commands:
 **Temporarily Disabled**
 The `--dry-run` feature is currently disabled and will not have any effect. It will be re-enabled in a future release.
 
+## Build Scripts
+
+Minion provides different build and validation options depending on your runtime:
+
+### Smart Build (Recommended)
+```bash
+npm run build
+```
+- **With Bun**: Creates an optimized single-executable binary
+- **Node.js only**: Validates package functionality (no binary creation)
+- Auto-detects available runtime and chooses the best option
+
+### Runtime-Specific Options
+```bash
+# Bun-specific: Create single executable binary
+npm run build:bun
+
+# Node.js development mode
+npm run dev
+
+# Bun development mode (if available)
+npm run dev:bun
+```
+
+**Important Note**: Only Bun can create single executable binaries. Node.js builds just validate that the package works correctly for npm distribution.
+
+### Testing
+```bash
+# Auto-detects runtime for testing
+npm test
+
+# Specific runtime tests
+npm run test:node    # Node.js test runner
+npm run test:bun     # Bun test runner (if available)
+```
+
 ## Architecture
 
 ```
 minion/
-├── bin/minion.js     # Main CLI entry point
+├── bin/minion.js         # Main CLI entry point
 ├── lib/
-│   ├── config.js     # Configuration and environment handling
-│   ├── input.js      # Input handling (stdin/file)
-│   ├── llm.js        # LLM client creation
-│   └── tools.js      # Safe command execution tools
-└── package.json      # Project configuration
+│   ├── config.js         # Configuration and environment handling
+│   ├── input.js          # Input handling (stdin/file)
+│   ├── llm.js            # LLM client creation
+│   ├── runtime-compat.js # Cross-runtime compatibility layer
+│   └── tools.js          # Safe command execution tools
+├── scripts/
+│   └── build.js          # Smart build script
+└── package.json          # Project configuration
 ```
 
 ## Development
@@ -225,11 +279,18 @@ For help, feedback, or to report issues, please use the following resources:
 
 ## Changelog
 
-### v1.1.0
 
-- refactor: use Bun specific api-s wherever possible for perf ([5b4b7d7], Sayan Riju Chakrabarti, 2025-07-15)
-- feat: implement safe file tools for use by LLM ([5f6d75b], Sayan Riju Chakrabarti, 2025-07-15)
-- feat: add support for custom configuration files and printing config ([95b40ca], Sayan Riju Chakrabarti, 2025-07-15)
+### v1.2.0 (2025-07-21)
+- add cross-runtime compatibility - auto-detects Bun for performance, falls back to Node.js
+- remove hard Bun dependency - tool now works on systems without Bun installed
+- add runtime detection and smart build system
+- show runtime info in --print-config output regardless of debug mode
+- create cross-runtime compatibility layer for file operations and process spawning
+
+### v1.1.0 (2025-07-15)
+- use Bun specific APIs wherever possible for performance
+- implement safe file tools for use by LLM
+- add support for custom configuration files and printing config
 
 ---
 *Changelogs are updated for every major or minor release. Patch releases are not included.*

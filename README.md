@@ -1,10 +1,10 @@
-# Minion 🤖
+# Minion 🤖 ![](https://img.shields.io/npm/v/@tabbybyte/minion?label)
 
 A cross-runtime CLI tool for AI-powered command execution with built-in safety features.
 
-**🚀 Runtime Smart**: Automatically detects and uses Bun for optimal performance when available, gracefully falls back to Node.js when Bun isn't installed.
-
 > **Note:** Minion is intended for quick execution of small to medium _ad hoc_ tasks on the command line, not for large or complex projects.
+
+[![NPM](https://nodei.co/npm/@tabbybyte/minion.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/@tabbybyte/minion)
 
 ## Prerequisites
 
@@ -294,4 +294,3 @@ For help, feedback, or to report issues, please use the following resources:
 - add support for custom configuration files and printing config
 
 ---
-*Changelogs are updated for every major or minor release. Patch releases are not included.*
